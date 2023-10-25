@@ -1,0 +1,68 @@
+:root {
+    --main-bg-color: #F9F7F3;
+    --navbar-color: #0FA3B1;
+    --link-hover-color: #007BFF;
+    --header-bg-color: #928C87;
+    --border-color: black;
+}
+
+body {
+    background-color: var(--main-bg-color);
+    font-family: 'Arial', sans-serif;
+    color: #4D4D4D;
+}
+
+.navbar {
+    background-color: var(--navbar-color);
+}
+
+.navbar .nav-link {
+    color: white !important;
+}
+
+.navbar .active-tab .nav-link {
+    color: var(--main-bg-color) !important;
+}
+
+#add-config-button, #uploadButton, #exportDropdown, .btn-primary {
+    background-color: var(--navbar-color) !important;
+    border-color: var(--navbar-color) !important;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: var(--link-hover-color);
+}
+
+#config-table,
+#config-table tbody,
+#config-table tr,
+#config-table td {
+    background-color: var(--main-bg-color);
+}
+
+#config-table thead,
+#config-table th {
+    background-color: var(--header-bg-color);
+}
+
+.nav-item:not(:last-child) {
+    border-right: 1px solid #cccccc;
+    margin-right: 10px;
+    padding-right: 10px;
+}
+
+#config-table {
+    border-collapse: collapse;
+}
+
+#config-table,
+#config-table th,
+#config-table td {
+    border: 1px solid var(--border-color);
+}
