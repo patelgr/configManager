@@ -31,9 +31,9 @@ public class ExportService {
     /**
      * Constructs an ExportService instance.
      *
-     * @param resourcesConfiguration        Configuration for resolving various resource directories.
-     * @param applicationFactory            Factory for creating application instances.
-     * @param metadataSerializationFactory  Factory for serializing metadata.
+     * @param resourcesConfiguration       Configuration for resolving various resource directories.
+     * @param applicationFactory           Factory for creating application instances.
+     * @param metadataSerializationFactory Factory for serializing metadata.
      */
     public ExportService(ResourcesConfiguration resourcesConfiguration,
                          ApplicationFactory applicationFactory,
@@ -46,7 +46,7 @@ public class ExportService {
     /**
      * Generates root metadata based on the provided set of product names.
      *
-     * @param productNameSet  Set of product names.
+     * @param productNameSet Set of product names.
      * @return Generated RootMetadata instance.
      */
     public RootMetadata generateRootMetadata(Set<ProductName> productNameSet) {
@@ -63,7 +63,7 @@ public class ExportService {
     /**
      * Constructs a list of applications based on the provided set of product names.
      *
-     * @param productNameSet  Set of product names.
+     * @param productNameSet Set of product names.
      * @return List of constructed Application instances.
      */
     private List<Application> constructApplicationList(Set<ProductName> productNameSet) {
@@ -96,7 +96,7 @@ public class ExportService {
     /**
      * Converts an array of IDs into a set of product names.
      *
-     * @param ids  Array of IDs.
+     * @param ids Array of IDs.
      * @return Set of converted product names.
      */
     public Set<ProductName> convertIdsToProductNames(String[] ids) {
@@ -117,8 +117,8 @@ public class ExportService {
     /**
      * Constructs an application instance based on the provided index and product name.
      *
-     * @param index         Index of the product.
-     * @param productName   Product name.
+     * @param index       Index of the product.
+     * @param productName Product name.
      * @return Constructed Application instance.
      */
     private Application constructApplication(int index, ProductName productName) {
@@ -128,7 +128,7 @@ public class ExportService {
     /**
      * Serializes metadata for a set of product names.
      *
-     * @param productNames  Set of product names to serialize metadata for.
+     * @param productNames Set of product names to serialize metadata for.
      * @throws IOException if any serialization issue occurs.
      */
     public void serializeMetadata(Set<ProductName> productNames) throws IOException {
@@ -142,7 +142,7 @@ public class ExportService {
     /**
      * Serializes root metadata.
      *
-     * @param rootMetadata  Root metadata to serialize.
+     * @param rootMetadata Root metadata to serialize.
      * @throws IOException if any serialization issue occurs.
      */
     public void serializeRootMetadata(RootMetadata rootMetadata) throws IOException {

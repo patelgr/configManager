@@ -90,7 +90,7 @@ public class ConfigurationService {
         Path resourceDirectory = Paths.get("src", "main", "resources");
         Path filePath = resourceDirectory.resolve("exportConfigurations.json");
         log.info("File:{},{}", filePath, Files.exists(filePath));
-        Files.delete(filePath);
+//        Files.delete(filePath);
         log.info("File:{},{}", filePath, Files.exists(filePath));
         // Create an ObjectMapper instance
         ObjectMapper objectMapper = new ObjectMapper();
