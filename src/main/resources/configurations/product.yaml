@@ -1,0 +1,27 @@
+product:
+  environment : sandbox-3
+  id: loan
+  name: Loan Product
+  description: A financial product for providing loans to customers.
+  version: 1.0
+  author: Your Name
+  releaseDate: 2023-10-18
+  license: Apache 2.0
+
+features:
+  - name: Loan Application
+    description: Allow customers to apply for loans online.
+  - name: Loan Approval
+    description: Streamline the loan approval process.
+  - name: Interest Calculation
+    description: Calculate loan interest based on various factors.
+  - name: Repayment Tracking
+    description: Monitor and manage loan repayments.
+  - name: Reporting and Analytics
+    description: Provide insights into loan performance.
+
+documentation:
+  - title: User Guide
+    url: https://example.com/loan-product-user-guide
+  - title: API Reference
+    url: https://example.com/loan-product-api-reference

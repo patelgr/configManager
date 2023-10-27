@@ -1,68 +1,152 @@
 package com.myapp.caac.service;
 
+import com.myapp.caac.configuration.ResourcesConfiguration;
+import com.myapp.caac.enums.ProductName;
 import com.myapp.caac.model.Application;
 import com.myapp.caac.model.ApplicationMetaData;
 import com.myapp.caac.model.RootMetadata;
+import com.myapp.caac.service.export.ApplicationFactory;
+import com.myapp.caac.service.export.MetadataSerializationFactory;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
+/**
+ * A service for exporting various data and metadata components.
+ * Provides functionality for metadata generation, serialization, and conversions.
+ */
 @Service
 @Slf4j
 public class ExportService {
 
-
     private final Path resourceDirectory;
 
-    public ExportService(@Value("${resource.basepath}") String basePath,
-                         @Value("${resource.directory}") String resourceDirectoryPath,
-                         ArchivingService archivingService) {
-        if ("home".equalsIgnoreCase(basePath)) {
-            String homeDirectory = System.getProperty("user.home");
-            this.resourceDirectory = Paths.get(homeDirectory, resourceDirectoryPath);
-        } else if ("project".equalsIgnoreCase(basePath)) {
-            this.resourceDirectory = Paths.get(resourceDirectoryPath);
-        } else {
-            throw new IllegalArgumentException("Invalid value for resource.basepath");
-        }
+    private final ApplicationFactory applicationFactory;
+    private final MetadataSerializationFactory metadataSerializationFactory;
+
+    /**
+     * Constructs an ExportService instance.
+     *
+     * @param resourcesConfiguration        Configuration for resolving various resource directories.
+     * @param applicationFactory            Factory for creating application instances.
+     * @param metadataSerializationFactory  Factory for serializing metadata.
+     */
+    public ExportService(ResourcesConfiguration resourcesConfiguration,
+                         ApplicationFactory applicationFactory,
+                         MetadataSerializationFactory metadataSerializationFactory) {
+        this.resourceDirectory = resourcesConfiguration.resolveApiProcessingDirectory();
+        this.applicationFactory = applicationFactory;
+        this.metadataSerializationFactory = metadataSerializationFactory;
     }
 
-        public RootMetadata setRootMetadata(Map<String, String> fileNames) {
+    /**
+     * Generates root metadata based on the provided set of product names.
+     *
+     * @param productNameSet  Set of product names.
+     * @return Generated RootMetadata instance.
+     */
+    public RootMetadata generateRootMetadata(Set<ProductName> productNameSet) {
         RootMetadata rootMetadata = new RootMetadata();
-        List<Application> applications = new ArrayList<>();
+        List<Application> applications = constructApplicationList(productNameSet);
 
-        log.info("Files: {}", fileNames.size());
-        rootMetadata.setNoOfApplications(String.valueOf(fileNames.size()));
-        int count = 0;
-
-        for (Map.Entry<String, String> file : fileNames.entrySet()) {
-            count++;
-            log.info("File: {}", file.getKey());
-            Application application = new Application();
-            application.setApplicationName(file.getKey());
-            application.setExecutionSeq(count);
-            application.setApplicationMetadataName(file.getValue());
-            application.setApplicationMetadataPath(resourceDirectory.toAbsolutePath().toString());
-            applications.add(application);
-        }
+        log.info("Files: {}", productNameSet.size());
+        rootMetadata.setNoOfApplications(String.valueOf(productNameSet.size()));
         rootMetadata.setApplications(applications);
+
         return rootMetadata;
     }
 
-    public ApplicationMetaData setRootMetadata() {
+    /**
+     * Constructs a list of applications based on the provided set of product names.
+     *
+     * @param productNameSet  Set of product names.
+     * @return List of constructed Application instances.
+     */
+    private List<Application> constructApplicationList(Set<ProductName> productNameSet) {
+        List<Application> applications = new ArrayList<>();
+        int index = 0;
+        for (ProductName productName : productNameSet) {
+            Application application = constructApplication(index, productName);
+            applications.add(application);
+            index++;
+        }
+
+        return applications;
+    }
+
+    /**
+     * Generates application metadata.
+     *
+     * @return Generated ApplicationMetaData instance.
+     */
+    public ApplicationMetaData generateApplicationMetaData() {
         ApplicationMetaData metadata = new ApplicationMetaData();
         metadata.setConfigurationFilepath(resourceDirectory.toAbsolutePath().toString());
-        metadata.setDescription("test desc");
+        metadata.setDescription("File Generated By Configuration Management Service");
         metadata.setConfigurationType("json");
         metadata.setConfigurationApplyPath(resourceDirectory.toAbsolutePath().toString());
         metadata.setConfigurationOperation("FileUpload");
         return metadata;
+    }
+
+    /**
+     * Converts an array of IDs into a set of product names.
+     *
+     * @param ids  Array of IDs.
+     * @return Set of converted product names.
+     */
+    public Set<ProductName> convertIdsToProductNames(String[] ids) {
+        return Arrays.stream(ids)
+                .map(id -> {
+                    try {
+                        return ProductName.fromString(id);
+                    } catch (Exception e) {
+                        log.error("Invalid file content for API: {}", id);
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .peek(productEnum -> log.info("productEnum:{}", productEnum))
+                .collect(Collectors.toSet());
+    }
+
+    /**
+     * Constructs an application instance based on the provided index and product name.
+     *
+     * @param index         Index of the product.
+     * @param productName   Product name.
+     * @return Constructed Application instance.
+     */
+    private Application constructApplication(int index, ProductName productName) {
+        return applicationFactory.createApplication(index, productName);
+    }
+
+    /**
+     * Serializes metadata for a set of product names.
+     *
+     * @param productNames  Set of product names to serialize metadata for.
+     * @throws IOException if any serialization issue occurs.
+     */
+    public void serializeMetadata(Set<ProductName> productNames) throws IOException {
+        for (ProductName productName : productNames) {
+            ApplicationMetaData metadata = generateApplicationMetaData();
+            metadata.setConfigurationFileName(productName.getFilename());
+            metadataSerializationFactory.serialize(metadata, productName);
+        }
+    }
+
+    /**
+     * Serializes root metadata.
+     *
+     * @param rootMetadata  Root metadata to serialize.
+     * @throws IOException if any serialization issue occurs.
+     */
+    public void serializeRootMetadata(RootMetadata rootMetadata) throws IOException {
+        metadataSerializationFactory.serializeRoot(rootMetadata);
     }
 
 }

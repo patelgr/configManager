@@ -1,15 +1,12 @@
 package com.myapp.caac.service.resource;
 
 import com.myapp.caac.enums.ProductName;
-import com.myapp.caac.service.ArchivingService;
 import com.myapp.caac.service.ConfigurationValidatorFactory;
 import com.myapp.caac.validations.api.ConfigurationValidator;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.Optional;
 
 @Service

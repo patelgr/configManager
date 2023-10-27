@@ -17,7 +17,7 @@ public class ApiConfigurationService implements ConfigurationManagementService {
     private final ConfigurationValidator validator;
 
     public ApiConfigurationService(LocalFileConfigurationManagementService theLocalFileConfigurationManagementService,
-                                       ConfigurationValidatorFactory validatorFactory) {
+                                   ConfigurationValidatorFactory validatorFactory) {
         this.localFileConfigurationManagementService = theLocalFileConfigurationManagementService;
         this.validator = validatorFactory.getValidator(apiName);
     }

@@ -2,28 +2,25 @@ package com.myapp.caac.controller;
 
 import com.myapp.caac.entity.CustomApi;
 import com.myapp.caac.entity.ExportConfigurations;
-//import com.myapp.caac.service.ConfigurationServiceOld;
-import com.myapp.caac.response.ConfigurationService;
+import com.myapp.caac.service.ConfigurationService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.myapp.caac.repository.ApiRepository.getCustomApis;
 
 @Controller
 @Slf4j
-public class FrontEndController {
+public class UserExperienceController {
 
 
     private final ConfigurationService configurationService;
 
-    public FrontEndController(ConfigurationService configurationService) {
+    public UserExperienceController(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }
 

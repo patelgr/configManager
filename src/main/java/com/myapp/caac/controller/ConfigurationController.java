@@ -3,13 +3,12 @@ package com.myapp.caac.controller;
 import com.myapp.caac.entity.CustomApi;
 import com.myapp.caac.entity.ExportConfigurations;
 import com.myapp.caac.response.ConfigurationResponse;
-import com.myapp.caac.response.ConfigurationService;
+import com.myapp.caac.service.ConfigurationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,7 +30,7 @@ public class ConfigurationController {
 
     @GetMapping(value = "configuration/{name}", produces = MediaType.ALL_VALUE)
     public ResponseEntity<String> getConfiguration(@PathVariable String name) {
-        log.info("getConfiguration:{}",name);
+        log.info("getConfiguration:{}", name);
         try {
             Optional<String> optionalConfiguration = configurationService.getConfiguration(name);
 
@@ -46,7 +45,7 @@ public class ConfigurationController {
 
     @PostMapping(value = "configuration/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ConfigurationResponse> saveConfiguration(@PathVariable String name, @RequestParam("file") MultipartFile file) {
-        log.info("saveConfiguration:{}",name);
+        log.info("saveConfiguration:{}", name);
         try {
             configurationService.saveConfiguration(name, file);
             log.info("saveConfiguration:success");
@@ -111,6 +110,7 @@ public class ConfigurationController {
         responseMap.put("message", "Export configuration saved successfully!");
         return ResponseEntity.ok(responseMap);
     }
+
     private void upsertConfiguration(List<ExportConfigurations> configurationsList,
                                      ExportConfigurations newConfig) {
         configurationsList.stream()

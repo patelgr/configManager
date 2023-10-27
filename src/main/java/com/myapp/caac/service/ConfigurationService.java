@@ -1,4 +1,4 @@
-package com.myapp.caac.response;
+package com.myapp.caac.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,8 +31,11 @@ public class ConfigurationService {
     }
 
     public Optional<String> getConfiguration(String apiName) {
+        log.info("getConfiguration:{}", apiName);
         ProductName productEnum = ProductName.fromString(apiName);
+        log.info("productEnum:{}", productEnum);
         ConfigurationManagementService configurationManagement = configurationManagementFactory.getConfigurationManagement(productEnum);
+        log.info("configurationManagement:{}", configurationManagement);
         Optional<String> optionalConfigurationContent = configurationManagement.getConfiguration();
         if (optionalConfigurationContent.isEmpty()) {
             log.error("Failed to fetch configuration for the given name: {}", apiName);
@@ -41,10 +44,14 @@ public class ConfigurationService {
     }
 
     public void saveConfiguration(String apiName, MultipartFile file) throws IOException {
+        log.info("saveConfiguration:{}", apiName);
         ProductName productEnum = ProductName.fromString(apiName);
+        log.info("productEnum:{}", productEnum);
         ConfigurationManagementService configurationManagement = configurationManagementFactory.getConfigurationManagement(productEnum);
+        log.info("configurationManagement:{}", configurationManagement);
         String content = new String(file.getBytes(), StandardCharsets.UTF_8);
         if (configurationManagement.validateConfigurationContent(content)) {
+            log.info("Saving the configuration for api: {}", apiName);
             configurationManagement.saveConfiguration(file);
         } else {
             log.error("Invalid file content for API: {}", apiName);
@@ -52,6 +59,7 @@ public class ConfigurationService {
         }
     }
 
+    // Ignore this .. this are just loader things.. not related to the actual code
     public List<ExportConfigurations> loadExportConfigurations() throws Exception {
         // Build the path to the resource
         Path resourceDirectory = Paths.get("src", "main", "resources");

@@ -1,9 +1,9 @@
 package com.myapp.caac.service.resource;
 
+import com.myapp.caac.configuration.ResourcesConfiguration;
 import com.myapp.caac.model.Configuration;
 import com.myapp.caac.service.ArchivingService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
@@ -32,21 +31,11 @@ public class LocalFileConfigurationManagementService {
             new Configuration("api", "api.json")
     );
 
-    public LocalFileConfigurationManagementService(@Value("${resource.basepath}") String basePath,
-                                                   @Value("${resource.directory}") String resourceDirectoryPath,
-                                                   ArchivingService archivingService) {
-        if ("home".equalsIgnoreCase(basePath)) {
-            String homeDirectory = System.getProperty("user.home");
-            this.resourceDirectory = Paths.get(homeDirectory, resourceDirectoryPath);
-        } else if ("project".equalsIgnoreCase(basePath)) {
-            this.resourceDirectory = Paths.get(resourceDirectoryPath);
-        } else {
-            throw new IllegalArgumentException("Invalid value for resource.basepath");
-        }
+    public LocalFileConfigurationManagementService(ResourcesConfiguration resourcesConfiguration
+            , ArchivingService archivingService) {
+        this.resourceDirectory = resourcesConfiguration.resolveApiProcessingDirectory();
         this.archivingService = archivingService;
     }
-
-
 
 
     private Optional<Configuration> findByType(String type) {
@@ -66,7 +55,7 @@ public class LocalFileConfigurationManagementService {
             return Optional.empty();
         } else {
             Path filePath = resolveResourcePath(filenameByApiName.get());
-            log.info("Reading {}, file:{}",apiName,filePath.toAbsolutePath());
+            log.info("Reading {}, file:{}", apiName, filePath.toAbsolutePath());
             try {
                 StringBuilder buf = new StringBuilder();
                 try (BufferedReader reader = Files.newBufferedReader(filePath, StandardCharsets.UTF_8)) {
@@ -90,7 +79,7 @@ public class LocalFileConfigurationManagementService {
         Optional<String> filenameByApiName = getFilenameByApiName(apiName);
         if (filenameByApiName.isPresent()) {
             Path filePath = resolveResourcePath(filenameByApiName.get());
-            log.info("Writing {}, file:{}",apiName,filePath.toAbsolutePath());
+            log.info("Writing {}, file:{}", apiName, filePath.toAbsolutePath());
 
             // Check if the file already exists and archive it
             if (Files.exists(filePath)) {

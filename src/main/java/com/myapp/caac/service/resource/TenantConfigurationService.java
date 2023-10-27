@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Optional;
+
 @Service
 public class TenantConfigurationService implements ConfigurationManagementService {
     private final ProductName apiName = ProductName.TENANT;
@@ -16,7 +17,7 @@ public class TenantConfigurationService implements ConfigurationManagementServic
     private final ConfigurationValidator validator;
 
     public TenantConfigurationService(LocalFileConfigurationManagementService theLocalFileConfigurationManagementService,
-                                       ConfigurationValidatorFactory validatorFactory) {
+                                      ConfigurationValidatorFactory validatorFactory) {
         this.localFileConfigurationManagementService = theLocalFileConfigurationManagementService;
         this.validator = validatorFactory.getValidator(apiName);
     }
