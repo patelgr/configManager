@@ -16,22 +16,22 @@ public class ApiRepository {
                 ProductName.TENANT.getLabel(),
                 ProductName.TENANT.getLanguage()
         );
-        CustomApi productFamilyApi = new CustomApi(
-                ProductName.PRODUCTFAMILY.getId(),
-                ProductName.PRODUCTFAMILY.getLabel(),
-                ProductName.PRODUCTFAMILY.getLanguage()
-        );
-        CustomApi productApi = new CustomApi(
-                ProductName.PRODUCT.getId(),
-                ProductName.PRODUCT.getLabel(),
-                ProductName.PRODUCT.getLanguage()
-
-        );
-        CustomApi apiApi = new CustomApi(
-                ProductName.API.getId(),
-                ProductName.API.getLabel(),
-                ProductName.API.getLanguage()
-        );
-        return List.of(tenantApi, productFamilyApi, productApi, apiApi);
+//        CustomApi productFamilyApi = new CustomApi(
+//                ProductName.PRODUCTFAMILY.getId(),
+//                ProductName.PRODUCTFAMILY.getLabel(),
+//                ProductName.PRODUCTFAMILY.getLanguage()
+//        );
+//        CustomApi productApi = new CustomApi(
+//                ProductName.PRODUCT.getId(),
+//                ProductName.PRODUCT.getLabel(),
+//                ProductName.PRODUCT.getLanguage()
+//
+//        );
+//        CustomApi apiApi = new CustomApi(
+//                ProductName.API.getId(),
+//                ProductName.API.getLabel(),
+//                ProductName.API.getLanguage()
+//        );
+        return List.of(tenantApi);
     }
 }

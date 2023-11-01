@@ -16,104 +16,100 @@
             integrity="sha512-OnAtCjouknPVEpJsz8W6FHpOLy2sxh1lWeC9utDE6jLwpnNYxAaeSufdvpBCnj9COsBkdBjrS4gqIYECeyIh6g=="
             referrerpolicy="no-referrer"
             src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.js"></script>
-    <style>
-        body {
-            background-color: #F9F7F3;
-            font-family: 'Arial', sans-serif;
-            color: #4D4D4D;
-        }
 
-        .navbar {
-            background-color: #0FA3B1;
-        }
-
-        .navbar .nav-link {
-            color: white !important;
-        }
-
-        .navbar .active-tab .nav-link {
-            color: #F9F7F3 !important;
-        }
-
-        .active-tab {
-            background-color: #B5E2FA !important;
-        }
-
-        #add-config-button, #uploadButton, #exportDropdown {
-            background-color: #0FA3B1 !important;
-            border-color: #0FA3B1 !important;
-        }
-
-        /* Save Button */
-        .btn-primary {
-            background-color: #0FA3B1;
-            border-color: #0FA3B1;
-        }
-
-        /* Reset Button - No change needed as you're using btn-danger */
-
-        /* Export Button - You can either retain btn-secondary or define a new class/style for differentiation */
-        .btn-export {
-            background-color: #6c757d;  /* Adjust this color if you want a different shade of gray or another color altogether */
-            border-color: #6c757d;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        a:hover {
-            text-decoration: underline;
-            color: #007BFF; /* This adds a hint of color when hovering over links */
-        }
-
-        h1, h2, h3, h4 {
-            margin-bottom: 15px;
-        }
-
-        h1 {
-            font-size: 2.3rem;
-        }
-
-        h2 {
-            font-size: 1.8rem;
-        }
-
-        .fs-5.custom-font-size {
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-        /* Existing styles */
-        #config-table,
-        #config-table tbody,
-        #config-table tr,
-        #config-table td {
-            background-color: #F9F7F3;
-        }
-
-        /* New style for header row */
-        #config-table thead,
-        #config-table th {
-            background-color: #928C87;
-        /*    Subtle Shades (Close to #F9F7F3):*/
-        /*#DED9D4*/
-        /*#EDEAE6*/
-        /*Medium Contrast Shades:*/
-        /*#C8C2BD*/
-        /*#B2ACA7*/
-        /*Darker Shades for Higher Contrast:*/
-        /*#A8A29D*/
-        /*#928C87*/
-        }
-
-        .nav-item:not(:last-child) {
-            border-right: 1px solid #cccccc;  /* Adjust the color as per your design */
-            margin-right: 10px;
-            padding-right: 10px;
-        }
+        <style>
+            body {
+                background-color: #F9F7F3;
+                font-family: 'Arial', sans-serif;
+                color: #4D4D4D;
+            }
+            body, html {
+                height: 100%;
+                margin: 0;
+                overflow: hidden;  /* Prevents double scrollbars if content overflows */
+            }
 
 
-    </style>
+            .navbar {
+                background-color: #0FA3B1;
+            }
+
+            .navbar .nav-link {
+                color: white !important;
+            }
+
+            #add-config-button, #uploadButton, #exportDropdown {
+                background-color: #0FA3B1 !important;
+                border-color: #0FA3B1 !important;
+            }
+
+            /* Save Button */
+            .btn-primary {
+                background-color: #0FA3B1;
+                border-color: #0FA3B1;
+            }
+
+            /* Export Button */
+            .btn-export {
+                background-color: #6c757d;
+                border-color: #6c757d;
+            }
+
+            a {
+                text-decoration: none;
+                color: inherit;
+            }
+
+            a:hover {
+                text-decoration: underline;
+                color: #007BFF; /* This adds a hint of color when hovering over links */
+            }
+
+            h1, h2, h3, h4 {
+                margin-bottom: 15px;
+            }
+
+            h1 {
+                font-size: 2.3rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            .fs-5.custom-font-size {
+                font-size: 0.9rem;
+                line-height: 1.6;
+            }
+
+            #config-table,
+            #config-table tbody,
+            #config-table tr,
+            #config-table td {
+                background-color: #F9F7F3;
+            }
+
+            /* Style for header row */
+            #config-table thead,
+            #config-table th {
+                background-color: #928C87;
+            }
+
+            .editor-container {
+                position: absolute;
+                top: 90px;  /* height of your header or any top margin */
+                bottom: 45px;
+                left: 5px;
+                right: 5px;
+                border: 1px solid #ccc;
+                overflow: hidden;
+            }
+
+            .button-container {
+                padding: 20px;
+                text-align: center;
+            }
+        </style>
+
 </head>
 </html>
