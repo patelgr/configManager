@@ -1,0 +1,22 @@
+{
+  "authentication": {
+    "type": "API Key Here",
+    "apiKey": "your-api-key-here" 
+  },
+  "endpoints": [
+    {
+      "name": "Endpoint A",
+      "url": "https://api.example.com/endpoint1",
+      "method": "GET",
+      "description": "Get data from Endpoint 1"
+    },
+    {
+      "name": "Endpoint 2",
+      "url": "https://api.example.com/endpoint2",
+      "method": "POST",
+      "description": "Create data with Endpoint 2"
+    }
+  ],
+  "name": "My Api",
+  "version": "1.0"
+}

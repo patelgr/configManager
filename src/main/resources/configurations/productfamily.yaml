@@ -1,0 +1,27 @@
+productFamily:
+  environment : sandbox-2
+  id: loan-family
+  name: Loan Product Family
+  description: A group of related loan products offered by our financial institution.
+  version: 1.0
+  author: Your Name
+  releaseDate: 2023-10-18
+  license: Apache 2.0
+
+products:
+  - id: loan
+    name: Personal Loan
+    description: A loan product for personal expenses.
+    version: 1.0
+  - id: mortgage
+    name: Mortgage Loan
+    description: A loan product for real estate purchases.
+    version: 1.0
+  - id: auto-loan
+    name: Auto Loan
+    description: A loan product for purchasing vehicles.
+    version: 1.0
+
+documentation:
+  - title: Product Family User Guide
+    url: https://example.com/loan-product-family-user-guide
