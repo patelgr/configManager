@@ -3,8 +3,8 @@
 <head th:replace="~{fragments/header.html :: header}">
 </head>
 <body>
-<div th:replace="~{fragments/navbar.html :: navbar-content}"></div>
-<div th:replace="~{fragments/toast :: toast}"></div>
+    <div th:replace="~{fragments/navbar.html :: navbar-content}"></div>
+    <div th:replace="~{fragments/toast :: toast}"></div>
 
 <div class="configurations d-flex flex-column align-items-center justify-content-center vh-100">
     <div class="dropdown mb-3" id="actionDropdown">
@@ -19,9 +19,11 @@
     </div>
 
     <!-- Single Monaco Editor Container, hidden initially -->
-    <div class="editor-container rounded mt-1 d-none" id="editor-tenant" data-language="javascript"></div>
+    <div class="editor-container rounded mt-1 d-none" id="editor-tenant" data-language="yaml"></div>
 
-    <button class="btn btn-primary mt-3 d-none" id="submitBtn" onclick="submitTenantSelection()">Submit</button>
+    <div class="fixed-bottom d-flex justify-content-center d-none " id="submit-div" style="margin-bottom: 5px;" >
+        <button class="btn btn-primary mt-3" id="submitBtn" onclick="submitTenantSelection()">Submit</button>
+    </div>
 </div>
 
 

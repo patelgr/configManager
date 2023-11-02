@@ -29,7 +29,7 @@ public class ConfigurationController {
 
     private final ConfigurationService configurationService;
 
-    @GetMapping(value = "configuration/{name}", produces = MediaType.ALL_VALUE)
+    @GetMapping(value = "/configuration/{name}", produces = MediaType.ALL_VALUE)
     public ResponseEntity<String> getConfiguration(@PathVariable String name) {
         log.info("getConfiguration:{}",name);
         try {
@@ -44,7 +44,7 @@ public class ConfigurationController {
         }
     }
 
-    @PostMapping(value = "configuration/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/configuration/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ConfigurationResponse> saveConfiguration(@PathVariable String name, @RequestParam("file") MultipartFile file) {
         log.info("saveConfiguration:{}",name);
         try {
