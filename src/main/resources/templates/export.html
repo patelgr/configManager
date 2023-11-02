@@ -3,29 +3,44 @@
 <head th:replace="~{fragments/header.html :: header}">
 </head>
 <body>
-    <div th:replace="~{fragments/navbar.html :: navbar-content}"></div>
-    <div th:replace="~{fragments/toast :: toast}"></div>
+<div th:replace="~{fragments/navbar.html :: navbar-content}"></div>
+<div th:replace="~{fragments/toast :: toast}"></div>
 
-<div class="configurations d-flex flex-column align-items-center justify-content-center vh-100">
-    <div class="dropdown mb-3" id="actionDropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="tenantDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-            Choose Action
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="tenantDropdown">
-            <li><a class="dropdown-item" href="#" onclick="loadDefaultTenant()">Generate Default Tenant</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <!-- Tenants will be populated here -->
-        </ul>
-    </div>
-
-    <!-- Single Monaco Editor Container, hidden initially -->
-    <div class="editor-container rounded mt-1 d-none" id="editor-tenant" data-language="yaml"></div>
-
-    <div class="fixed-bottom d-flex justify-content-center d-none " id="submit-div" style="margin-bottom: 5px;" >
-        <button class="btn btn-primary mt-3" id="submitBtn" onclick="submitTenantSelection()">Submit</button>
+<!-- Action Buttons at the Top -->
+<div class="row">
+    <div id="action-buttons" class="action-buttons vstack gap-2 col-md-12" style="justify-content: center;">
+        <!-- Buttons will retain their original placement until acted upon by JavaScript -->
+        <button class="btn btn-primary btn-md" id="generate-btn">Generate Template</button>
+        <button class="btn btn-primary btn-md" id="copy-btn">Copy</button>
+        <button class="btn btn-primary btn-md" id="update-btn">Update</button>
     </div>
 </div>
 
+<!-- Search Interface -->
+<div id="search-interface" class="row d-none justify-content-md-center mt-3">
+    <div class="col-md-5">
+        <input type="text" id="search-bar" class="form-control" placeholder="Search tenants...">
+    </div>
+    <div class="col-md-5">
+        <select id="dropdown" class="form-control"></select> <!-- Dropdown added here -->
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-primary" id="search-submit">Submit</button>
+    </div>
+</div>
+
+<!-- List Interface, hidden initially -->
+<div id="list-interface" class="list-interface d-none">
+    <!-- Items will be populated here -->
+</div>
+
+<!-- Editor Interface, hidden initially -->
+<div id="editor-interface" class="editor-interface d-none">
+    <!-- Monaco Editor Container -->
+    <div class="editor-container rounded" id="editor-tenant" data-language="yaml"></div>
+    <button class="btn btn-success" id="submit-btn">Save Changes</button>
+    <button class="btn btn-danger" id="cancel-changes">Cancel</button>
+</div>
 
 <!-- External script imports -->
 <script src="/js/main.js"></script>
@@ -35,4 +50,3 @@
 <script src="/js/toast.js"></script>
 </body>
 </html>
-

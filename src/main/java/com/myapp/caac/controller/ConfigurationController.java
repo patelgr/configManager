@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 
 import static com.myapp.caac.repository.ApiRepository.getCustomApis;
 
-@RestController
-@RequestMapping("/api/v1")
+//@RestController
+//@RequestMapping("/api/v1")
 @CrossOrigin
 @Slf4j
 @AllArgsConstructor

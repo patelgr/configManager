@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Slf4j
 @AllArgsConstructor
-@RestController
+//@RestController
 @CrossOrigin
 public class ImportController {
 
