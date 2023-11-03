@@ -23,6 +23,7 @@
                 font-family: 'Arial', sans-serif;
                 color: #4D4D4D;
             }
+            /*https://coolors.co/palette/01293d-054a61-054A61-b5e2fa-76bc97-12684e-0f5740-ffe066-dfe0e2-a6a8ab*/
             body, html {
                 height: 100%;
                 margin: 0;
@@ -31,7 +32,7 @@
 
 
             .navbar {
-                background-color: #0FA3B1;
+                background-color: #054A61;
             }
 
             .navbar .nav-link {
@@ -39,14 +40,14 @@
             }
 
             #add-config-button, #uploadButton, #exportDropdown {
-                background-color: #0FA3B1 !important;
-                border-color: #0FA3B1 !important;
+                background-color: #054A61 !important;
+                border-color: #054A61 !important;
             }
 
             /* Save Button */
             .btn-primary {
-                background-color: #0FA3B1;
-                border-color: #0FA3B1;
+                background-color: #054A61;
+                border-color: #054A61;
             }
 
             /* Export Button */
@@ -95,21 +96,43 @@
                 background-color: #928C87;
             }
 
-            .editor-container {
-                position: absolute;
-                top: 60px;  /* height of your header or any top margin */
-                bottom: 45px;
-                left: 5px;
-                right: 5px;
-                border: 1px solid #ccc;
-                overflow: hidden;
+            .export-action-button-color {
+                background-color: #0FA3B1; /* The hexadecimal color for the background */
+                color: white; /* Assuming you want the text to be white for better contrast */
+                border-color: #0FA3B1; /* To match the border with the background */
+            }
+            .export-action-text-color {
+                color: #01293D; /* The hexadecimal color for the text */
             }
 
-            .button-container {
-                padding: 20px;
-                text-align: center;
+            /* Optional: If you want the buttons to have some space between them */
+            button {
+                margin: 0 1px; /* 10px space between the buttons */
+            }
+            .active-button {
+                background-color: #01293D !important; /* Use !important to override Bootstrap styles if necessary */
+                border-color: #01293D !important;
             }
 
+
+            /* Use flexbox on the container to fill the remaining space */
+            #editor-interface {
+                display: flex; /* Use flex layout */
+                flex-direction: column; /* Stack children vertically */
+                height: 100%; /* Take up all vertical space */
+            }
+
+            /* Make the editor wrapper grow and fill the space */
+            #editor-container-wrapper {
+                flex-grow: 1; /* Grow to fill available space */
+                height: 0; /* Fix for flexbox overflow */
+            }
+
+            /* Ensure the editor itself also takes full height */
+            #editor-tenant {
+                width: 100%; /* Full width */
+                height: 100%; /* Full height of its parent */
+            }
 
         </style>
 

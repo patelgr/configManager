@@ -35,7 +35,7 @@ public class MyController {
     public ResponseEntity<String> getConfigurationById(@PathVariable Long id) {
         log.info("getConfigurationById: {}", id);
         // This is as only one tenant works for now
-        String staticNameForNow = "tenant";
+        String staticNameForNow = "api";
         try {
             Optional<String> optionalConfiguration = configurationService.getConfiguration(staticNameForNow);
             return optionalConfiguration
@@ -93,7 +93,8 @@ public class MyController {
         // Shuffle the list to get random order
         Collections.shuffle(sampleNames);
 
-        // Generate a random number between 8 and 15
+        // Generate
+        // a random number between 8 and 15
         int numberOfElements = ThreadLocalRandom.current().nextInt(8, 16);
 
         // Add random elements to the map
