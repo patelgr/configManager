@@ -30,6 +30,24 @@ function removeElementAttribute(element, attribute) {
     }
 }
 
+function hideElementById(elementId) {
+    const element = getElementById(elementId);
+    if (element) {
+        element.classList.add('d-none');
+    } else {
+        console.error(`Element with ID '${elementId}' not found.`);
+    }
+}
+
+function showElementById(elementId) {
+    const element = getElementById(elementId);
+    if (element) {
+        element.classList.remove('d-none');
+    } else {
+        console.error(`Element with ID '${elementId}' not found.`);
+    }
+}
+
 /**
  * Initializes the Monaco Editor instance.
  */
@@ -94,10 +112,10 @@ function handleGenerateClick() {
 
     // Clear previous attributes
     clearEditorDivAttributes();
-    setActiveButton(document.getElementById('generate-btn'));
-    deActivateSelectTenantDivOnAction()
-    fetchAndPopulateEditor(apiEndpoints.generateDefault);
-    updateEditorDivWithMethod("POST");
+    setActiveButton(getElementById('generate-btn'));
+    deActivateSelectTenantDivOnAction();
+    fetchAndPopulateEditor(apiEndpoints.generateDefault).then(r => console.log('handleGenerateClick: fetchAndPopulateEditor ended'));
+    updateEditorDivWithMethod('POST');
     makeEditorVisible();
     console.log('handleGenerateClick ended');
 }
@@ -144,7 +162,7 @@ function onSelectTenant() {
     if (selectedId) {
         let tenantUrl = apiEndpoints.getTenant(selectedId);
         console.log('Selected tenant URL:', tenantUrl);
-        fetchAndPopulateEditor(tenantUrl);
+        fetchAndPopulateEditor(tenantUrl).then(r => console.log('onSelectTenant: fetchAndPopulateEditor ended'));
         // get editor-interface data method
         let editorInterface = getElementById('editor-interface');
         let method = editorInterface.getAttribute('data-method');
@@ -160,8 +178,8 @@ function onSelectTenant() {
 function populateTenantsDropdown() {
     console.log('populateTenantsDropdown started');
     fetch(apiEndpoints.listTenants)
-        .then(response => response.json())
-        .then(data => {
+        .then((response) => response.json())
+        .then((data) => {
             const dropdown = getElementById('dropdown');
             dropdown.innerHTML = ''; // Clear existing options
 
@@ -184,7 +202,7 @@ function populateTenantsDropdown() {
             // Add change event listener to the dropdown
             dropdown.addEventListener('change', onSelectTenant);
         })
-        .catch(error => {
+        .catch((error) => {
             console.error('Error fetching tenants:', error);
         });
     console.log('populateTenantsDropdown ended');
@@ -236,20 +254,16 @@ function activateSelectTenantDivOnAction() {
     console.log('activateSelectTenantDivOnAction started');
     populateTenantsDropdown();
     hideEditor();
-    const tenantDiv = getElementById('select-tenant-div');
-    tenantDiv.classList.remove('d-none');
-    const tenantEmptyDiv = getElementById('select-tenant-div-empty');
-    tenantEmptyDiv.classList.add('d-none');
+    showElementById('select-tenant-div');
+    hideElementById('select-tenant-div-empty');
     console.log('activateSelectTenantDivOnAction ended');
 }
 
 function deActivateSelectTenantDivOnAction() {
     console.log('deActivateSelectTenantDivOnAction started');
     clearTenantsDropdown();
-    const tenantDiv = getElementById('select-tenant-div');
-    tenantDiv.classList.add('d-none');
-    const tenantEmptyDiv = getElementById('select-tenant-div-empty');
-    tenantEmptyDiv.classList.remove('d-none');
+    hideElementById('select-tenant-div');
+    showElementById('select-tenant-div-empty');
     console.log('deActivateSelectTenantDivOnAction ended');
 }
 
@@ -276,44 +290,29 @@ function clearEditor() {
 
 function showEditorActionButton() {
     console.log('showEditorActionButton started');
-    const saveButton = getElementById('save-button-container');
-    saveButton.classList.remove('d-none');
-    const cancelButton = getElementById('cancel-button-container');
-    cancelButton.classList.remove('d-none');
-    const exportButton = getElementById('export-button-container');
-    exportButton.classList.remove('d-none');
-
-    const saveTenantEmptyDiv = getElementById('save-tenant-div-empty');
-    saveTenantEmptyDiv.classList.add('d-none');
-    const cancelTenantEmptyDiv = getElementById('cancel-tenant-div-empty');
-    cancelTenantEmptyDiv.classList.add('d-none');
-    const exportTenantEmptyDiv = getElementById('export-tenant-div-empty');
-    exportTenantEmptyDiv.classList.add('d-none');
+    showElementById('save-button-container');
+    showElementById('cancel-button-container');
+    showElementById('export-button-container');
+    hideElementById('save-tenant-div-empty');
+    hideElementById('cancel-tenant-div-empty');
+    hideElementById('export-tenant-div-empty');
     console.log('showEditorActionButton ended');
 }
 
 function hideEditorActionButtons() {
     console.log('hideEditorActionButtons started');
-    const saveButton = getElementById('save-button-container');
-    saveButton.classList.add('d-none');
-    const cancelButton = getElementById('cancel-button-container');
-    cancelButton.classList.add('d-none');
-    const exportButton = getElementById('export-button-container');
-    exportButton.classList.add('d-none');
-
-    const saveTenantEmptyDiv = getElementById('save-tenant-div-empty');
-    saveTenantEmptyDiv.classList.remove('d-none');
-    const cancelTenantEmptyDiv = getElementById('cancel-tenant-div-empty');
-    cancelTenantEmptyDiv.classList.remove('d-none');
-    const exportTenantEmptyDiv = getElementById('export-tenant-div-empty');
-    exportTenantEmptyDiv.classList.remove('d-none');
+    hideElementById('save-button-container');
+    hideElementById('cancel-button-container');
+    hideElementById('export-button-container');
+    showElementById('save-tenant-div-empty');
+    showElementById('cancel-tenant-div-empty');
+    showElementById('export-tenant-div-empty');
     console.log('hideEditorActionButtons ended');
 }
 
 function makeEditorVisible() {
     console.log('makeEditorVisible started');
-    const editorInterface = getElementById('editor-interface');
-    editorInterface.classList.remove('d-none');
+    showElementById('editor-interface');
     showEditorActionButton();
     console.log('makeEditorVisible ended');
 }
@@ -321,33 +320,32 @@ function makeEditorVisible() {
 function hideEditor() {
     console.log('hideEditor started');
     clearEditor();
-    const editorInterface = getElementById('editor-interface');
-    editorInterface.classList.add('d-none');
+    hideElementById('editor-interface');
     hideEditorActionButtons();
     console.log('hideEditor ended');
 }
 
 async function fetchAndPopulateEditor(url) {
-    console.log('fetchAndPopulateEditor started')
+    console.log('fetchAndPopulateEditor started');
 
     fetch(url)
-        .then(response => response.json())
-        .then(data => {
+        .then((response) => response.json())
+        .then((data) => {
             // Populate the editor with the fetched data
             populateEditor(data);
         })
-        .catch(error => {
+        .catch((error) => {
             console.error('Error fetching data:', error);
         });
-    console.log('fetchAndPopulateEditor ended')
+    console.log('fetchAndPopulateEditor ended');
 }
-
-
 
 window.onload = async function () {
     console.log('window.onload started');
     // Configure the path for Monaco Editor
-    require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' } });
+    require.config({
+        paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' },
+    });
 
     // Load the Monaco Editor
     await require(['vs/editor/editor.main'], async function () {
