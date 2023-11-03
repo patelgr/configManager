@@ -30,23 +30,27 @@ function removeElementAttribute(element, attribute) {
     }
 }
 
-function hideElementById(elementId) {
+function toggleElementById(elementId, action) {
     const element = getElementById(elementId);
     if (element) {
-        element.classList.add('d-none');
+        if (action === 'hide') {
+            element.classList.add('d-none');
+        } else if (action === 'show') {
+            element.classList.remove('d-none');
+        }
     } else {
         console.error(`Element with ID '${elementId}' not found.`);
     }
 }
 
-function showElementById(elementId) {
-    const element = getElementById(elementId);
-    if (element) {
-        element.classList.remove('d-none');
-    } else {
-        console.error(`Element with ID '${elementId}' not found.`);
-    }
+function hideElementById(elementId) {
+    toggleElementById(elementId, 'hide');
 }
+
+function showElementById(elementId) {
+    toggleElementById(elementId, 'show');
+}
+
 
 /**
  * Initializes the Monaco Editor instance.
