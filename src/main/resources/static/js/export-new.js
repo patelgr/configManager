@@ -1,5 +1,3 @@
-
-
 /**
  * Editor setup and interaction with the API to manage tenant configurations.
  */
@@ -18,12 +16,25 @@ const apiEndpoints = {
     putTenant: `${editorConfig.apiBase}/configuration`,
 };
 
+function getElementById(id) {
+    return document.getElementById(id);
+}
+
+function setElementAttribute(element, attribute, value) {
+    element.setAttribute(attribute, value);
+}
+
+function removeElementAttribute(element, attribute) {
+    if (element.hasAttribute(attribute)) {
+        element.removeAttribute(attribute);
+    }
+}
 
 /**
  * Initializes the Monaco Editor instance.
  */
 async function setupEditor() {
-    const editorElement = document.getElementById('editor-tenant');
+    const editorElement = getElementById('editor-tenant');
     if (!editorElement) {
         console.error('Editor element not found.');
         return; // Abort if editor element is not found
@@ -36,36 +47,29 @@ async function setupEditor() {
     });
 }
 
-
 function updateEditorDivWithMethod(action) {
-    console.log('updateEditorDivWithMethod started')
-    const editorDiv = document.getElementById('editor-interface');
+    console.log('updateEditorDivWithMethod started');
+    const editorDiv = getElementById('editor-interface');
     // if action is post remove data attribute id
     if (action === 'POST') {
         clearEditorDivAttributes();
     }
-    editorDiv.setAttribute('data-method', action);
-    console.log('updateEditorDivWithMethod ended')
-
+    setElementAttribute(editorDiv, 'data-method', action);
+    console.log('updateEditorDivWithMethod ended');
 }
 
 function clearEditorDivAttributes() {
     console.log('clearEditorDivAttributes started');
-    const editorDiv = document.getElementById('editor-interface');
+    const editorDiv = getElementById('editor-interface');
 
     // Remove the data-id attribute if it exists
-    if (editorDiv.hasAttribute('data-id')) {
-        editorDiv.removeAttribute('data-id');
-    }
+    removeElementAttribute(editorDiv, 'data-id');
 
     // Remove the data-method attribute if it exists
-    if (editorDiv.hasAttribute('data-method')) {
-        editorDiv.removeAttribute('data-method');
-    }
+    removeElementAttribute(editorDiv, 'data-method');
 
     console.log('clearEditorDivAttributes ended');
 }
-
 
 function handleEditorButtonAction(buttonId, method) {
     console.log(`${method} button clicked`);
@@ -74,7 +78,7 @@ function handleEditorButtonAction(buttonId, method) {
     clearEditorDivAttributes();
 
     // Set the active button
-    setActiveButton(document.getElementById(buttonId));
+    setActiveButton(getElementById(buttonId));
 
     // Update the editor div with the new method
     updateEditorDivWithMethod(method);
@@ -86,7 +90,7 @@ function handleEditorButtonAction(buttonId, method) {
 }
 
 function handleGenerateClick() {
-    console.log('handleGenerateClick started')
+    console.log('handleGenerateClick started');
 
     // Clear previous attributes
     clearEditorDivAttributes();
@@ -95,7 +99,7 @@ function handleGenerateClick() {
     fetchAndPopulateEditor(apiEndpoints.generateDefault);
     updateEditorDivWithMethod("POST");
     makeEditorVisible();
-    console.log('handleGenerateClick ended')
+    console.log('handleGenerateClick ended');
 }
 
 function handleCopyButtonClick() {
@@ -105,7 +109,6 @@ function handleCopyButtonClick() {
 function handleUpdateButtonClick() {
     handleEditorButtonAction('update-btn', 'PUT');
 }
-
 
 function handleResetChangesClick() {
     console.log('Reset changes button clicked');
@@ -117,33 +120,33 @@ function handleResetChangesClick() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM loaded')
+    console.log('DOM loaded');
     // Set event listeners for buttons
-    document.getElementById('copy-btn').addEventListener('click', handleCopyButtonClick);
-    document.getElementById('update-btn').addEventListener('click', handleUpdateButtonClick);
-    document.getElementById('generate-btn').addEventListener('click', handleGenerateClick);
-    document.getElementById('reset-changes').addEventListener('click', handleResetChangesClick);
-    console.log('DOM loaded ended')
+    getElementById('copy-btn').addEventListener('click', handleCopyButtonClick);
+    getElementById('update-btn').addEventListener('click', handleUpdateButtonClick);
+    getElementById('generate-btn').addEventListener('click', handleGenerateClick);
+    getElementById('reset-changes').addEventListener('click', handleResetChangesClick);
+    console.log('DOM loaded ended');
 });
 
 function updateEditorDivWithId(selectedId) {
-    console.log('updateEditorDivWithId started')
-    const editorDiv = document.getElementById('editor-interface');
-    editorDiv.setAttribute('data-id', selectedId);
-    console.log('updateEditorDivWithId ended')
+    console.log('updateEditorDivWithId started');
+    const editorDiv = getElementById('editor-interface');
+    setElementAttribute(editorDiv, 'data-id', selectedId);
+    console.log('updateEditorDivWithId ended');
 }
 
 function onSelectTenant() {
-    console.log('onSelectTenant started')
+    console.log('onSelectTenant started');
     hideEditor();
-    const dropdown = document.getElementById('dropdown');
+    const dropdown = getElementById('dropdown');
     const selectedId = dropdown.value;
     if (selectedId) {
         let tenantUrl = apiEndpoints.getTenant(selectedId);
         console.log('Selected tenant URL:', tenantUrl);
         fetchAndPopulateEditor(tenantUrl);
         // get editor-interface data method
-        let editorInterface = document.getElementById('editor-interface');
+        let editorInterface = getElementById('editor-interface');
         let method = editorInterface.getAttribute('data-method');
         // if method is PUT than update
         if (method === 'PUT') {
@@ -151,7 +154,7 @@ function onSelectTenant() {
         }
         makeEditorVisible();
     }
-    console.log('onSelectTenant ended')
+    console.log('onSelectTenant ended');
 }
 
 function populateTenantsDropdown() {
@@ -159,7 +162,7 @@ function populateTenantsDropdown() {
     fetch(apiEndpoints.listTenants)
         .then(response => response.json())
         .then(data => {
-            const dropdown = document.getElementById('dropdown');
+            const dropdown = getElementById('dropdown');
             dropdown.innerHTML = ''; // Clear existing options
 
             // Add default hint option
@@ -189,7 +192,7 @@ function populateTenantsDropdown() {
 
 function clearTenantsDropdown() {
     console.log('clearTenantsDropdown started');
-    const dropdown = document.getElementById('dropdown');
+    const dropdown = getElementById('dropdown');
     if (dropdown) {
         // Remove the event listener
         dropdown.removeEventListener('change', onSelectTenant);
@@ -208,50 +211,47 @@ function clearTenantsDropdown() {
     console.log('clearTenantsDropdown ended');
 }
 
-
 function setActiveButton(button) {
-    console.log('setActiveButton started')
+    console.log('setActiveButton started');
     // Remove active class from all buttons
-    document.getElementById('copy-btn').classList.remove('active-button');
-    document.getElementById('update-btn').classList.remove('active-button');
-    document.getElementById('generate-btn').classList.remove('active-button');
+    getElementById('copy-btn').classList.remove('active-button');
+    getElementById('update-btn').classList.remove('active-button');
+    getElementById('generate-btn').classList.remove('active-button');
 
     // Add active class to the clicked button
     button.classList.add('active-button');
-    console.log('setActiveButton ended')
+    console.log('setActiveButton ended');
 }
 
 function hideActiveButton() {
-    console.log('hideActiveButton started')
+    console.log('hideActiveButton started');
     // Remove active class from all buttons
-    document.getElementById('copy-btn').classList.remove('active-button');
-    document.getElementById('update-btn').classList.remove('active-button');
-    document.getElementById('generate-btn').classList.remove('active-button');
-    console.log('hideActiveButton ended')
+    getElementById('copy-btn').classList.remove('active-button');
+    getElementById('update-btn').classList.remove('active-button');
+    getElementById('generate-btn').classList.remove('active-button');
+    console.log('hideActiveButton ended');
 }
 
 function activateSelectTenantDivOnAction() {
-    console.log('activateSelectTenantDivOnAction started')
+    console.log('activateSelectTenantDivOnAction started');
     populateTenantsDropdown();
     hideEditor();
-    const tenantDiv = document.getElementById('select-tenant-div');
+    const tenantDiv = getElementById('select-tenant-div');
     tenantDiv.classList.remove('d-none');
-    const tenantEmptyDiv = document.getElementById('select-tenant-div-empty');
+    const tenantEmptyDiv = getElementById('select-tenant-div-empty');
     tenantEmptyDiv.classList.add('d-none');
-    console.log('activateSelectTenantDivOnAction ended')
+    console.log('activateSelectTenantDivOnAction ended');
 }
 
 function deActivateSelectTenantDivOnAction() {
-    console.log('deActivateSelectTenantDivOnAction started')
+    console.log('deActivateSelectTenantDivOnAction started');
     clearTenantsDropdown();
-    const tenantDiv = document.getElementById('select-tenant-div');
+    const tenantDiv = getElementById('select-tenant-div');
     tenantDiv.classList.add('d-none');
-    const tenantEmptyDiv = document.getElementById('select-tenant-div-empty');
+    const tenantEmptyDiv = getElementById('select-tenant-div-empty');
     tenantEmptyDiv.classList.remove('d-none');
-    console.log('deActivateSelectTenantDivOnAction ended')
+    console.log('deActivateSelectTenantDivOnAction ended');
 }
-
-
 
 // This function populates the Monaco editor with the provided data
 function populateEditor(data) {
@@ -275,60 +275,59 @@ function clearEditor() {
 }
 
 function showEditorActionButton() {
-    console.log('showEditorActionButton started')
-    const saveButton = document.getElementById('save-button-container');
+    console.log('showEditorActionButton started');
+    const saveButton = getElementById('save-button-container');
     saveButton.classList.remove('d-none');
-    const cancelButton = document.getElementById('cancel-button-container');
+    const cancelButton = getElementById('cancel-button-container');
     cancelButton.classList.remove('d-none');
-    const exportButton = document.getElementById('export-button-container');
+    const exportButton = getElementById('export-button-container');
     exportButton.classList.remove('d-none');
 
-    const saveTenantEmptyDiv = document.getElementById('save-tenant-div-empty');
+    const saveTenantEmptyDiv = getElementById('save-tenant-div-empty');
     saveTenantEmptyDiv.classList.add('d-none');
-    const cancelTenantEmptyDiv = document.getElementById('cancel-tenant-div-empty');
+    const cancelTenantEmptyDiv = getElementById('cancel-tenant-div-empty');
     cancelTenantEmptyDiv.classList.add('d-none');
-    const exportTenantEmptyDiv = document.getElementById('export-tenant-div-empty');
+    const exportTenantEmptyDiv = getElementById('export-tenant-div-empty');
     exportTenantEmptyDiv.classList.add('d-none');
-    console.log('showEditorActionButton ended')
+    console.log('showEditorActionButton ended');
 }
 
 function hideEditorActionButtons() {
     console.log('hideEditorActionButtons started');
-    const saveButton = document.getElementById('save-button-container');
+    const saveButton = getElementById('save-button-container');
     saveButton.classList.add('d-none');
-    const cancelButton = document.getElementById('cancel-button-container');
+    const cancelButton = getElementById('cancel-button-container');
     cancelButton.classList.add('d-none');
-    const exportButton = document.getElementById('export-button-container');
+    const exportButton = getElementById('export-button-container');
     exportButton.classList.add('d-none');
 
-    const saveTenantEmptyDiv = document.getElementById('save-tenant-div-empty');
+    const saveTenantEmptyDiv = getElementById('save-tenant-div-empty');
     saveTenantEmptyDiv.classList.remove('d-none');
-    const cancelTenantEmptyDiv = document.getElementById('cancel-tenant-div-empty');
+    const cancelTenantEmptyDiv = getElementById('cancel-tenant-div-empty');
     cancelTenantEmptyDiv.classList.remove('d-none');
-    const exportTenantEmptyDiv = document.getElementById('export-tenant-div-empty');
+    const exportTenantEmptyDiv = getElementById('export-tenant-div-empty');
     exportTenantEmptyDiv.classList.remove('d-none');
     console.log('hideEditorActionButtons ended');
 }
 
-
 function makeEditorVisible() {
-    console.log('makeEditorVisible started')
-    const editorInterface = document.getElementById('editor-interface');
+    console.log('makeEditorVisible started');
+    const editorInterface = getElementById('editor-interface');
     editorInterface.classList.remove('d-none');
     showEditorActionButton();
-    console.log('makeEditorVisible ended')
+    console.log('makeEditorVisible ended');
 }
 
 function hideEditor() {
-    console.log('hideEditor started')
+    console.log('hideEditor started');
     clearEditor();
-    const editorInterface = document.getElementById('editor-interface');
+    const editorInterface = getElementById('editor-interface');
     editorInterface.classList.add('d-none');
     hideEditorActionButtons();
-    console.log('hideEditor ended')
+    console.log('hideEditor ended');
 }
 
-function fetchAndPopulateEditor(url) {
+async function fetchAndPopulateEditor(url) {
     console.log('fetchAndPopulateEditor started')
 
     fetch(url)
@@ -346,7 +345,7 @@ function fetchAndPopulateEditor(url) {
 
 
 window.onload = async function () {
-    console.log('window.onload started')
+    console.log('window.onload started');
     // Configure the path for Monaco Editor
     require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' } });
 
@@ -355,5 +354,5 @@ window.onload = async function () {
         // Once the editor is loaded, set it up
         await setupEditor();
     });
-    console.log('window.onload ended')
+    console.log('window.onload ended');
 };
