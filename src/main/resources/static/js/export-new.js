@@ -166,7 +166,7 @@ function onSelectTenant() {
     if (selectedId) {
         let tenantUrl = apiEndpoints.getTenant(selectedId);
         console.log('Selected tenant URL:', tenantUrl);
-        fetchAndPopulateEditor(tenantUrl).then(r => console.log('onSelectTenant: fetchAndPopulateEditor ended'));
+        fetchAndPopulateEditor(tenantUrl).then(() => console.log('onSelectTenant: fetchAndPopulateEditor ended'));
         // get editor-interface data method
         let editorInterface = getElementById('editor-interface');
         let method = editorInterface.getAttribute('data-method');
