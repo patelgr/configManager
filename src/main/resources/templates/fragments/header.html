@@ -1,147 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="header">
-    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <meta charset="UTF-8">
-    <title>QA Config Management</title>
-    <!-- Bootstrap CSS and JS imports -->
-    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" rel="stylesheet">
-    <script crossorigin="anonymous"
-            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title th:if="${title}" th:text="${title}">QA Config Management</title>
 
-    <!-- Include Monaco Editor -->
-    <script crossorigin="anonymous"
+    <!-- Bootstrap CSS and JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <!-- Monaco Editor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.js"
             integrity="sha512-OnAtCjouknPVEpJsz8W6FHpOLy2sxh1lWeC9utDE6jLwpnNYxAaeSufdvpBCnj9COsBkdBjrS4gqIYECeyIh6g=="
-            referrerpolicy="no-referrer"
-            src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.js"></script>
+            referrerpolicy="no-referrer" crossorigin="anonymous"></script>
 
-        <style>
-            body {
-                background-color: #F9F7F3;
-                font-family: 'Arial', sans-serif;
-                color: #4D4D4D;
-            }
-            /*https://coolors.co/palette/01293d-054a61-054A61-b5e2fa-76bc97-12684e-0f5740-ffe066-dfe0e2-a6a8ab*/
-            body, html {
-                height: 100%;
-                margin: 0;
-                overflow: hidden;  /* Prevents double scrollbars if content overflows */
-            }
-
-
-            .navbar {
-                background-color: #054A61;
-            }
-
-            .navbar .nav-link {
-                color: white !important;
-            }
-
-            .navbar .active-tab .nav-link {
-                color: #F9F7F3 !important;
-            }
-
-            .active-tab {
-                background-color: #0099CC !important;
-            }
-            #add-config-button, #uploadButton, #exportDropdown {
-                background-color: #054A61 !important;
-                border-color: #054A61 !important;
-            }
-
-            /* Save Button */
-            .btn-primary {
-                background-color: #054A61;
-                border-color: #054A61;
-            }
-
-            /* Export Button */
-            .btn-export {
-                background-color: #6c757d;
-                border-color: #6c757d;
-            }
-
-            a {
-                text-decoration: none;
-                color: inherit;
-            }
-
-            a:hover {
-                text-decoration: underline;
-                color: #007BFF; /* This adds a hint of color when hovering over links */
-            }
-
-            h1, h2, h3, h4 {
-                margin-bottom: 15px;
-            }
-
-            h1 {
-                font-size: 2.3rem;
-            }
-
-            h2 {
-                font-size: 1.8rem;
-            }
-
-            .fs-5.custom-font-size {
-                font-size: 0.9rem;
-                line-height: 1.6;
-            }
-
-            #config-table,
-            #config-table tbody,
-            #config-table tr,
-            #config-table td {
-                background-color: #F9F7F3;
-            }
-
-            /* Style for header row */
-            #config-table thead,
-            #config-table th {
-                background-color: #928C87;
-            }
-
-            .export-action-button-color {
-                background-color: #0FA3B1; /* The hexadecimal color for the background */
-                color: white; /* Assuming you want the text to be white for better contrast */
-                border-color: #0FA3B1; /* To match the border with the background */
-            }
-            .export-action-text-color {
-                color: #01293D; /* The hexadecimal color for the text */
-            }
-
-            /* Optional: If you want the buttons to have some space between them */
-            button {
-                margin: 0 1px; /* 10px space between the buttons */
-            }
-            .active-button {
-                background-color: #01293D !important; /* Use !important to override Bootstrap styles if necessary */
-                border-color: #01293D !important;
-            }
-
-
-            /* Use flexbox on the container to fill the remaining space */
-            #editor-interface {
-                display: flex; /* Use flex layout */
-                flex-direction: column; /* Stack children vertically */
-                height: 100%; /* Take up all vertical space */
-            }
-
-            /* Make the editor wrapper grow and fill the space */
-            #editor-container-wrapper {
-                flex-grow: 1; /* Grow to fill available space */
-                height: 0; /* Fix for flexbox overflow */
-            }
-
-            /* Ensure the editor itself also takes full height */
-            #editor-tenant {
-                width: 100%; /* Full width */
-                height: 100%; /* Full height of its parent */
-            }
-
-        </style>
-
+    <!-- Common styles -->
+    <link rel="stylesheet" href="/css/header.css">
 </head>
 </html>

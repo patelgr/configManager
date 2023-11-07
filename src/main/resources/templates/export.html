@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header.html :: header}">
+    <title>Export</title>
+    <style>
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/navbar.html :: navbar-content}"></div>
+
+<!-- Include the toast fragment -->
+<div th:replace="~{fragments/toast :: toast}"></div>
+
+<div class="container mt-4">
+    <h2>Select Tenants to Export</h2>
+    <form id="export-form">
+        <table id="tenants-table" class="table">
+            <thead>
+            <tr>
+                <th>Select</th>
+                <th>Tenant Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Tenants will be populated here via JavaScript -->
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Export Selected</button>
+    </form>
+</div>
+
+
+
+
+<script src="/js/toast.js"></script>
+<script src="/js/export-new.js"></script>
+</body>
+</html>
