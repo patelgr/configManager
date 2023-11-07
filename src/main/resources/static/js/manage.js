@@ -14,7 +14,7 @@
         generateDefault: `${editorConfig.apiBase}/configuration/1`,
         postTenant: `${editorConfig.apiBase}/configuration`,
         putTenant: `${editorConfig.apiBase}/configuration`,
-        exportTeanant: `${editorConfig.apiBase}`
+        exportTenant: `${editorConfig.apiBase}/export`,
     };
 
     function getElementById(id) {
@@ -149,6 +149,8 @@
         getElementById('update-btn').addEventListener('click', handleUpdateButtonClick);
         getElementById('generate-btn').addEventListener('click', handleGenerateClick);
         getElementById('reset-changes').addEventListener('click', handleResetChangesClick);
+        getElementById('save-btn').addEventListener('click', handleSaveButtonClick);
+        getElementById('export-btn').addEventListener('click', handleExportButtonClick);
         console.log('DOM loaded ended');
     });
 
@@ -174,6 +176,8 @@
             // if method is PUT than update
             if (method === 'PUT') {
                 updateEditorDivWithId(selectedId);
+                toggleExportButton(); // Call this function to toggle the export button visibility
+
             }
             makeEditorVisible();
         }
@@ -297,10 +301,10 @@
         console.log('showEditorActionButton started');
         showElementById('save-button-container');
         showElementById('cancel-button-container');
-        showElementById('export-button-container');
+        // showElementById('export-button-container');
         hideElementById('save-tenant-div-empty');
         hideElementById('cancel-tenant-div-empty');
-        hideElementById('export-tenant-div-empty');
+        // hideElementById('export-tenant-div-empty');
         console.log('showEditorActionButton ended');
     }
 
@@ -308,10 +312,10 @@
         console.log('hideEditorActionButtons started');
         hideElementById('save-button-container');
         hideElementById('cancel-button-container');
-        hideElementById('export-button-container');
+        // hideElementById('export-button-container');
         showElementById('save-tenant-div-empty');
         showElementById('cancel-tenant-div-empty');
-        showElementById('export-tenant-div-empty');
+        // showElementById('export-tenant-div-empty');
         console.log('hideEditorActionButtons ended');
     }
 
@@ -344,6 +348,123 @@
             });
         console.log('fetchAndPopulateEditor ended');
     }
+
+
+
+
+    function handleSaveButtonClick() {
+        console.log('Save button clicked');
+
+        const editorDiv = getElementById('editor-interface');
+        const action = editorDiv.getAttribute('data-method');
+        const editorContent = editorConfig.editorInstance.getValue(); // get content from Monaco editor
+        const selectedId = editorDiv.getAttribute('data-id'); // get selected ID if any
+        let url = '';
+        let method = '';
+        let payload = {};
+
+        // Determine the action based on the data-method attribute
+        if (action === 'POST') {
+            url = apiEndpoints.postTenant; // URL for POST
+            method = 'POST';
+            payload = JSON.stringify({ configuration: editorContent });
+        } else if (action === 'PUT') {
+            url = apiEndpoints.putTenant; // URL for PUT
+            method = 'PUT';
+            payload = JSON.stringify({ id: selectedId, configuration: editorContent });
+        } else {
+            // Handle other cases or show an error
+            console.error('Invalid action.');
+            return;
+        }
+
+        // Make the API call
+        fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: payload
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Save successful:', data);
+                showToast('Save successful'); // Replace with your toast function
+            })
+            .catch(error => {
+                console.error('Save failed:', error);
+                showToast(`Save failed: ${error.message}`); // Replace with your toast function
+            });
+    }
+
+    function handleExportButtonClick() {
+        console.log('Export button clicked');
+
+        const editorDiv = getElementById('editor-interface');
+        const selectedId = editorDiv.getAttribute('data-id'); // Get selected ID if any
+        const editorContent = editorConfig.editorInstance.getValue(); // Get content from Monaco editor
+
+        if (!selectedId) {
+            console.error('No tenant selected for export.');
+            showToast('No tenant selected for export.'); // Replace with your toast function
+            return;
+        }
+
+        const payload = JSON.stringify({
+            id: selectedId,
+            configuration: editorContent
+        });
+
+        fetch(apiEndpoints.exportTenant, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: payload
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.blob(); // Assuming the server sends a ZIP file as a binary blob
+            })
+            .then(blob => {
+                // Create a URL for the blob
+                const blobUrl = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = `configuration_${selectedId}.zip`; // Give the ZIP file a name
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(blobUrl); // Clean up the URL object
+                showToast('Export successful'); // Replace with your toast function
+            })
+            .catch(error => {
+                console.error('Export failed:', error);
+                showToast(`Export failed: ${error.message}`); // Replace with your toast function
+            });
+    }
+
+    function toggleExportButton() {
+        const editorDiv = getElementById('editor-interface');
+        const selectedId = editorDiv.getAttribute('data-id');
+        if (selectedId) {
+            // If there is a selected ID, enable the export button and disable the placeholder
+            showElementById('export-button-container');
+            hideElementById('export-tenant-div-empty');
+        } else {
+            // If there is no selected ID, disable the export button and enable the placeholder
+            hideElementById('export-button-container');
+            showElementById('export-tenant-div-empty');
+        }
+    }
+
 
     window.onload = async function () {
         console.log('window.onload started');
